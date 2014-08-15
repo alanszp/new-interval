@@ -1,0 +1,31 @@
+{
+  "name": "new-interval",
+  "version": "1.0.0",
+  "homepage": "https://github.com/alanszp/new-interval",
+  "authors": [
+    "Alan Szpigiel <alanszp@gmail.com>"
+  ],
+  "description": "A real Interval object",
+  "main": "dist/new-interval.min.js",
+  "moduleType": [
+    "amd",
+    "es6",
+    "globals",
+    "node",
+    "yui"
+  ],
+  "keywords": [
+    "interval",
+    "timeout",
+    "setInterval",
+    "setTimeout"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
