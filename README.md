@@ -8,10 +8,20 @@
 Install the module with: `npm install new-interval`
 
 ```js
+// Only for Node.
 var Interval = require('new-interval').Interval;
+
 var interval = new Interval(3000, function(){
 	doSomethingAwsome();
 });
+interval.start();
+interval.clear();
+
+// or the same can be acomplished by
+var interval = Interval.set(3000, function(){
+	doSomethingAwsome();
+});
+
 interval.clear();
 ```
 Remember that Lo-Dash or Underscore are required to load before using Intervals!
