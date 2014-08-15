@@ -1,0 +1,39 @@
+{
+  "name": "new-interval",
+  "version": "1.0.0",
+  "main": "dist/new-interval.min.js",
+  "description": "A real Interval object",
+  "homepage": "https://github.com/alanszp/new-interval",
+  "bugs": "https://github.com/alanszp/new-interval/issues",
+  "author": {
+    "name": "Alan Szpigiel",
+    "email": "alanszp@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alanszp/new-interval"
+  },
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "new-interval",
+    "interval",
+    "timeout",
+    "setInterval",
+    "setTimeout"
+  ],
+  "devDependencies": {
+    "grunt-contrib-coffee": "^0.11.0",
+    "grunt-contrib-uglify": "^0.5.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-mocha-test": "^0.11.0",
+    "grunt-umd": "^2.0.0",
+    "load-grunt-tasks": "^0.4.0",
+    "time-grunt": "^0.3.1"
+  },
+  "dependencies": {
+    "lodash": "^2.4.1"
+  }
+}
