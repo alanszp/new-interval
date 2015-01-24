@@ -1,95 +1,95 @@
-# new-interval 1.0.0 | Copyright 2014 Alan Szpigiel | MIT License
-((root, factory) ->
-	if typeof exports is 'object'
-    # Expose to Node.js
-    module.exports = factory()
-  else if typeof define is 'function' and define.amd
-    # Expose to RequireJS
-    define([], factory)
+  # new-interval 1.0.0 | Copyright 2014 Alan Szpigiel | MIT License
+  ((root, factory) ->
+    if typeof exports is 'object'
+      # Expose to Node.js
+      module.exports = factory()
+    else if typeof define is 'function' and define.amd
+      # Expose to RequireJS
+      define([], factory)
 
-  # Expose to global object (likely browser window)
-  exports = factory()
-  for prop of exports
-    root[prop] = exports[prop];
+    # Expose to global object (likely browser window)
+    exports = factory()
+    for prop of exports
+      root[prop] = exports[prop];
 
-  return 
-) this, () -> 
-	allIntervals = []
+    return
+  ) this, () ->
+    allIntervals = []
 
-	now = Date.now || () ->
-		new Date().valueOf();
+    now = Date.now || () ->
+      new Date().valueOf();
 
-	class Interval
-		voidFn = () ->
-		
-		constructor: (delay = null, callback = voidFn) ->
-			@delayTime = delay
-			@fn = callback
-			@timeoutId = null
-			allIntervals.push(this)
+    class Interval
+      voidFn = () ->
 
-		start: (nowTime) ->
-			return if @timeoutId?
+      constructor: (delay = null, callback = voidFn) ->
+        @delayTime = delay
+        @fn = callback
+        @timeoutId = null
+        allIntervals.push(this)
 
-			nowTime ?= now()
-			@planned = nowTime + @delayTime
+      start: (nowTime) ->
+        return if @timeoutId?
 
-			@started = true
-			@timeoutId = setTimeout(@inmediate, @delayTime)
-			this
+        nowTime ?= now()
+        @planned = nowTime + @delayTime
 
-		inmediate: () =>
-			@fn()
-			if @timeoutId?
-				@planned += @delayTime
-				@timeoutId = setTimeout(@inmediate, @planned - now())
-			this
+        @started = true
+        @timeoutId = setTimeout(@immediate, @delayTime)
+        this
 
-		clear: () ->
-			@pause()
+      immediate: () =>
+      @fn()
+      if @timeoutId?
+        @planned += @delayTime
+        @timeoutId = setTimeout(@immediate, @planned - now())
+      this
 
-			@fn = voidFn
-			@delay = null
-			allIntervals = _(allIntervals).without(this)
-			undefined
+    clear: () ->
+      @pause()
 
-		pause: () ->
-			return unless @timeoutId?
+      @fn = voidFn
+      @delay = null
+      allIntervals = _(allIntervals).without(this)
+      undefined
 
-			clearTimeout(@timeoutId)
-			@timeoutId = null
-			@planned = null
-			this
+    pause: () ->
+      return unless @timeoutId?
 
-		delay: (delay) ->
-			@delayTime = delay
-			this
+      clearTimeout(@timeoutId)
+      @timeoutId = null
+      @planned = null
+      this
 
-		callback: (fn) ->
-			@fn = fn
-			this
+    delay: (delay) ->
+      @delayTime = delay
+      this
 
-	Interval.set = () ->
-		interval = new Interval(arguments...)
-		interval.start()
-		interval
+    callback: (fn) ->
+      @fn = fn
+      this
 
-	Interval.clearAll = () ->
-		_(allIntervals).each (interval) ->
-			interval.clear()
-		Interval
+  Interval.set = () ->
+    interval = new Interval(arguments...)
+    interval.start()
+    interval
 
-	Interval.pauseAll = () ->
-		_(allIntervals).each (interval) ->
-			interval.pause()
-		Interval
+  Interval.clearAll = () ->
+    _(allIntervals).each (interval) ->
+      interval.clear()
+    Interval
 
-	Interval.startAll = () ->
-		nowTime = now()
-		_(allIntervals).each (interval) ->
-			interval.start(nowTime)
-		Interval
+  Interval.pauseAll = () ->
+    _(allIntervals).each (interval) ->
+      interval.pause()
+    Interval
 
-	{
-		Interval: Interval
-	}
+  Interval.startAll = () ->
+    nowTime = now()
+    _(allIntervals).each (interval) ->
+      interval.start(nowTime)
+    Interval
+
+  {
+    Interval: Interval
+  }
