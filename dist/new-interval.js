@@ -1,4 +1,3 @@
-/*! new-interval 1.0.0 | Copyright 2014 Alan Szpigiel | MIT License */
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -31,7 +30,7 @@
         if (callback == null) {
           callback = voidFn;
         }
-        this.inmediate = __bind(this.inmediate, this);
+        this.immediate = __bind(this.immediate, this);
         this.delayTime = delay;
         this.fn = callback;
         this.timeoutId = null;
@@ -47,28 +46,33 @@
         }
         this.planned = nowTime + this.delayTime;
         this.started = true;
-        this.timeoutId = setTimeout(this.inmediate, this.delayTime);
+        this.timeoutId = setTimeout(this.immediate, this.delayTime);
         return this;
       };
 
-      Interval.prototype.inmediate = function() {
-        this.fn();
-        if (this.timeoutId != null) {
-          this.planned += this.delayTime;
-          this.timeoutId = setTimeout(this.inmediate, this.planned - now());
-        }
-        return this;
-      };
+      Interval.prototype.immediate = function() {};
 
-      Interval.prototype.clear = function() {
+      Interval.fn();
+
+      if (Interval.timeoutId != null) {
+        Interval.planned += Interval.delayTime;
+        Interval.timeoutId = setTimeout(Interval.immediate, Interval.planned - now());
+      }
+
+      Interval;
+
+      return Interval;
+
+    })();
+    return {
+      clear: function() {
         this.pause();
         this.fn = voidFn;
         this.delay = null;
         allIntervals = _(allIntervals).without(this);
         return void 0;
-      };
-
-      Interval.prototype.pause = function() {
+      },
+      pause: function() {
         if (this.timeoutId == null) {
           return;
         }
@@ -76,54 +80,54 @@
         this.timeoutId = null;
         this.planned = null;
         return this;
-      };
-
-      Interval.prototype.delay = function(delay) {
+      },
+      delay: function(delay) {
         this.delayTime = delay;
         return this;
-      };
-
-      Interval.prototype.callback = function(fn) {
+      },
+      callback: function(fn) {
         this.fn = fn;
         return this;
-      };
+      }
+    };
+  });
 
-      return Interval;
+  Interval.set = function() {
+    var interval;
+    interval = (function(func, args, ctor) {
+      ctor.prototype = func.prototype;
+      var child = new ctor, result = func.apply(child, args);
+      return Object(result) === result ? result : child;
+    })(Interval, arguments, function(){});
+    interval.start();
+    return interval;
+  };
 
-    })();
-    Interval.set = function() {
-      var interval;
-      interval = (function(func, args, ctor) {
-        ctor.prototype = func.prototype;
-        var child = new ctor, result = func.apply(child, args);
-        return Object(result) === result ? result : child;
-      })(Interval, arguments, function(){});
-      interval.start();
-      return interval;
-    };
-    Interval.clearAll = function() {
-      _(allIntervals).each(function(interval) {
-        return interval.clear();
-      });
-      return Interval;
-    };
-    Interval.pauseAll = function() {
-      _(allIntervals).each(function(interval) {
-        return interval.pause();
-      });
-      return Interval;
-    };
-    Interval.startAll = function() {
-      var nowTime;
-      nowTime = now();
-      _(allIntervals).each(function(interval) {
-        return interval.start(nowTime);
-      });
-      return Interval;
-    };
-    return {
-      Interval: Interval
-    };
+  Interval.clearAll = function() {
+    _(allIntervals).each(function(interval) {
+      return interval.clear();
+    });
+    return Interval;
+  };
+
+  Interval.pauseAll = function() {
+    _(allIntervals).each(function(interval) {
+      return interval.pause();
+    });
+    return Interval;
+  };
+
+  Interval.startAll = function() {
+    var nowTime;
+    nowTime = now();
+    _(allIntervals).each(function(interval) {
+      return interval.start(nowTime);
+    });
+    return Interval;
+  };
+
+  ({
+    Interval: Interval
   });
 
 }).call(this);
